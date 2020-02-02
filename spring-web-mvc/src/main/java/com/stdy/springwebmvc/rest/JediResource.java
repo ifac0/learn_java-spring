@@ -1,8 +1,7 @@
 package com.stdy.springwebmvc.rest;
 
-import com.stdy.springwebmvc.exception.JediNotFoundException;
 import com.stdy.springwebmvc.model.Jedi;
-import com.stdy.springwebmvc.repository.JediRepository;
+import com.stdy.springwebmvc.service.JediService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,62 +9,40 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class JediResource {
 
     @Autowired
-    private JediRepository repository;
+    private JediService service;
 
     @GetMapping("/api/jedi")
     public List<Jedi> getAllJedi(){
-        return repository.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/api/jedi/{id}")
-    public Jedi getJedi(@PathVariable("id") Long id){
-        final Optional<Jedi> jedi = repository.findById(id);
-        if (jedi.isPresent()){
-            return jedi.get();
-        } else {
-            throw new JediNotFoundException();
-        }
+    public ResponseEntity<Jedi> getJedi(@PathVariable("id") Long id){
+        final Jedi jedi = service.findById(id);
+        return ResponseEntity.ok(jedi);
     }
 
     @PostMapping("/api/jedi")
     @ResponseStatus(HttpStatus.CREATED)
     public Jedi createJedi(@Valid @RequestBody Jedi jedi){
-        return  repository.save(jedi);
+        return  service.save(jedi);
     }
 
     @PutMapping("/api/jedi/{id}")
     public ResponseEntity<Object> updateJedi(@PathVariable("id") Long id, @Valid @RequestBody Jedi dto){
-        
-        final Optional<Jedi> jediEntity = repository.findById(id);
-        final Jedi jedi;
-        if(jediEntity.isPresent()){
-           jedi = jediEntity.get();
-        } else {
-            return  ResponseEntity.notFound().build();
-        }
+        Jedi jedi = service.update(id, dto);
 
-        jedi.setName(dto.getName());
-        jedi.setLastName(dto.getLastName());
-
-        return ResponseEntity.ok(repository.save(jedi));
+        return  ResponseEntity.ok(jedi);
     }
 
     @DeleteMapping("/api/jedi/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id){
-
-        final Optional<Jedi> jedi = repository.findById(id);
-
-        if(jedi.isPresent()){
-            repository.delete(jedi.get());
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id){
+        service.delete(id);
     }
 }

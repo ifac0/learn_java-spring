@@ -61,7 +61,7 @@ public class JediResource {
         final Optional<Jedi> jedi = repository.findById(id);
 
         if(jedi.isPresent()){
-            repository.delete(jedi);
+            repository.delete(jedi.get());
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

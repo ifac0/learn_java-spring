@@ -1,38 +1,56 @@
 package com.stdy.springwebmvc.model;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Jedi {
 
-    @Size(min = 3, max = 10, message = "Nome deve conter entre 3 e 10 caracteres")
-    @NotBlank(message = "Nome não pode estar em branco")
+    @Id
+    @Column(name = "jedi_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "jedi_name")
+    @NotBlank(message = "Name cannot be blank")
+    @Size(min = 3, max = 20, message = "Name must have between 3 and 20 letters")
     private String name;
 
-    @NotBlank(message = "Sobrenome não pode estar em branco")
+    @Column(name = "jedi_lastanme")
+    @Size(max = 20, message = "Last Name must not have more than 20 letters")
     private String lastName;
 
-    public Jedi(final String name, final String lastName) {
+    public Jedi (final String name, final String lastName) {
         this.name = name;
         this.lastName = lastName;
     }
 
-    public Jedi() {
+    public Jedi () {
+
     }
 
-    public String getName() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public String getName () {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName (final String name) {
         this.name = name;
     }
 
-    public String getLastName() {
+    public String getLastName () {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName (final String lastName) {
         this.lastName = lastName;
     }
 }

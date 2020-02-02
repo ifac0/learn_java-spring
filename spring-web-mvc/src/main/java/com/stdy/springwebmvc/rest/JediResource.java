@@ -3,6 +3,7 @@ package com.stdy.springwebmvc.rest;
 import com.stdy.springwebmvc.model.Jedi;
 import com.stdy.springwebmvc.repository.JediRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class JediResource {
     }
 
     @PostMapping("/api/jedi")
+    @ResponseStatus(HttpStatus.CREATED)
     public Jedi createJedi(@Valid @RequestBody Jedi jedi){
         return  repository.save(jedi);
     }

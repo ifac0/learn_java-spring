@@ -1,6 +1,5 @@
 package com.stdy.springwebmvc.rest;
 
-import com.stdy.springwebmvc.exception.JediNotFoundException;
 import com.stdy.springwebmvc.model.Jedi;
 import com.stdy.springwebmvc.repository.JediRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +34,22 @@ public class JediResource {
     @PostMapping("/api/jedi")
     public Jedi createJedi(@Valid @RequestBody Jedi jedi){
         return  repository.save(jedi);
+    }
+
+    @PutMapping("/api/jedi/{id}")
+    public ResponseEntity<Object> updateJedi(@PathVariable("id") Long id, @Valid @RequestBody Jedi dto){
+        
+        final Optional<Jedi> jediEntity = repository.findById(id);
+        final Jedi jedi;
+        if(jediEntity.isPresent()){
+           jedi = jediEntity.get();
+        } else {
+            return  ResponseEntity.notFound().build();
+        }
+
+        jedi.setName(dto.getName());
+        jedi.setLastName(dto.getLastName());
+
+        return ResponseEntity.ok(repository.save(jedi));
     }
 }

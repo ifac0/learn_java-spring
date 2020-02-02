@@ -1,13 +1,15 @@
 package com.stdy.springwebmvc.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class Jedi {
 
-    @NotBlank
+    @Size(min = 3, max = 10, message = "Nome deve conter entre 3 e 10 caracteres")
+    @NotBlank(message = "Nome não pode estar em branco")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Sobrenome não pode estar em branco")
     private String lastName;
 
     public Jedi(final String name, final String lastName) {

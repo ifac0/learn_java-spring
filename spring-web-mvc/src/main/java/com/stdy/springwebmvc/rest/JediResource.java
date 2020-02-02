@@ -33,7 +33,7 @@ public class JediResource {
     }
 
     @PostMapping("/api/jedi")
-    public Jedi createJedi(@Valid @ModelAttribute Jedi jedi){
+    public Jedi createJedi(@Valid @RequestBody Jedi jedi){
         return  repository.save(jedi);
     }
 }

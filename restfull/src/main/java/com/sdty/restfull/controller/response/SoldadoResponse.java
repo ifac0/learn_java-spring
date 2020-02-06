@@ -1,12 +1,24 @@
-package com.sdty.restfull.dto;
+package com.sdty.restfull.controller.response;
 
-public class Soldado {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class SoldadoResponse {
+    private Long id;
     private String cpf;
     private String nome;
     private String raca;
     private String arma;
     private String status;
+
+    @JsonProperty("id")
+    public Long getResourceId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCpf() {
         return cpf;
